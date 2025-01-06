@@ -41,7 +41,8 @@ import {
     GCActivityId,
     IActivity,
     IActivityDetails,
-    IActivityUploadDetails
+    IActivityUploadDetails,
+    INewActivity
 } from './types/activity';
 
 let config: GCCredentials | undefined = undefined;
@@ -359,6 +360,10 @@ export default class GarminConnect {
     async deleteWorkout(workout: { workoutId: string }) {
         if (!workout.workoutId) throw new Error('Missing workout');
         return this.client.delete(this.url.WORKOUT(workout.workoutId));
+    }
+
+    async addActivity(activity: INewActivity) {
+        return this.client.post<IActivity>(this.url.ACTIVITY, activity);
     }
 
     async getSteps(date = new Date()): Promise<number> {

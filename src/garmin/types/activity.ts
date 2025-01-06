@@ -445,3 +445,49 @@ export interface IActivityDetails {
           }[]
         | null;
 }
+
+export interface INewActivity {
+    accessControlRuleDTO: {
+        typeId: number;
+        typeKey: string;
+    };
+    activityName: string;
+    activityTypeDTO: {
+        typeKey: string;
+    };
+    description: string | null;
+    eventTypeDTO: {
+        typeKey: string;
+    };
+    metadataDTO: {
+        associatedCourseId: string | null;
+        autoCalcCalories: boolean;
+        videoUrl: string | null;
+    };
+    summaryDTO: {
+        averageHR: number | null;
+        averagePower: number | null;
+        averageRunCadence: number | null;
+        averageTemperature: number | null;
+        bmrCalories: number;
+        calories: number | null;
+        distance: number;
+        duration: number;
+        elapsedDuration: number | null;
+        elevationGain: number | null;
+        elevationLoss: number | null;
+        endLatitude: number | null;
+        endLongitude: number | null;
+        maxElevation: number | null;
+        minElevation: number | null;
+        maxHR: number | null;
+        maxRunCadence: number | null;
+        maxTemperature: number | null;
+        minTemperature: number | null;
+        movingDuration: number | null;
+        startTimeLocal: string;
+        startTimeGMT: string | null;
+        startLatitude: number | null;
+        startLongitude: number | null;
+    };
+}
