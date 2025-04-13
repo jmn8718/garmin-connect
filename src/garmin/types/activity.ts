@@ -469,7 +469,7 @@ export interface INewActivity {
         averagePower: number | null;
         averageRunCadence: number | null;
         averageTemperature: number | null;
-        bmrCalories: number;
+        bmrCalories: number | null;
         calories: number | null;
         distance: number;
         duration: number;
@@ -489,5 +489,8 @@ export interface INewActivity {
         startTimeGMT: string | null;
         startLatitude: number | null;
         startLongitude: number | null;
+    };
+    timeZoneUnitDTO: {
+        unitKey: string;
     };
 }
