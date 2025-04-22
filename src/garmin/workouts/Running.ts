@@ -1,55 +1,52 @@
 import template, { IRunningWorkout } from './templates/RunningTemplate';
 
 export default class Running {
-    private data: IRunningWorkout;
-    constructor() {
-        this.data = template();
-    }
+  private data: IRunningWorkout;
+  constructor() {
+    this.data = template();
+  }
 
-    get name() {
-        return this.data.workoutName;
-    }
+  get name() {
+    return this.data.workoutName;
+  }
 
-    set name(name) {
-        this.data.workoutName = `${name}`;
-    }
+  set name(name) {
+    this.data.workoutName = `${name}`;
+  }
 
-    get distance() {
-        return (
-            this.data.workoutSegments[0].workoutSteps[0].endConditionValue || 0
-        );
-    }
+  get distance() {
+    return this.data.workoutSegments[0].workoutSteps[0].endConditionValue || 0;
+  }
 
-    set distance(meters: number) {
-        this.data.workoutSegments[0].workoutSteps[0].endConditionValue =
-            Math.round(meters);
-    }
+  set distance(meters: number) {
+    this.data.workoutSegments[0].workoutSteps[0].endConditionValue = Math.round(meters);
+  }
 
-    get workoutId() {
-        return this.data.workoutId;
-    }
+  get workoutId() {
+    return this.data.workoutId;
+  }
 
-    set workoutId(workoutId) {
-        this.data.workoutId = workoutId;
-    }
+  set workoutId(workoutId) {
+    this.data.workoutId = workoutId;
+  }
 
-    get description() {
-        return this.data.description;
-    }
+  get description() {
+    return this.data.description;
+  }
 
-    set description(description) {
-        this.data.description = description;
-    }
+  set description(description) {
+    this.data.description = description;
+  }
 
-    isValid() {
-        return !!(this.name && this.distance);
-    }
+  isValid() {
+    return !!(this.name && this.distance);
+  }
 
-    toJson() {
-        return this.data;
-    }
+  toJson() {
+    return this.data;
+  }
 
-    toString() {
-        return `${this.name}, ${(this.distance / 1000).toFixed(2)}km`;
-    }
+  toString() {
+    return `${this.name}, ${(this.distance / 1000).toFixed(2)}km`;
+  }
 }

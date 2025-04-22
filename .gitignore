@@ -1,21 +1,5 @@
-# intelliJ files
-.idea
-*.iml
-*.ipr
-*.iws
-out
-
-# eclipse files
-.classpath
-.project
-.settings
-
-# maven files
-target
-catalina.base_IS_UNDEFINED
-
-# Mac OS X shit...
-.DS_Store*
+# MAC
+.DS_Store
 
 # node
 node_modules
@@ -23,6 +7,3 @@ dist
 
 # garmin credentials
 garmin.config.json
-
-# tests
-test
