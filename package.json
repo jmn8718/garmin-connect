@@ -1,77 +1,75 @@
 {
-    "name": "garmin-connect",
-    "version": "1.6.1",
-    "description": "Makes it simple to interface with Garmin Connect to get or set any data point",
-    "type": "module",
-    "types": "dist/index.d.ts",
-    "exports": {
-        ".": {
-            "import": {
-                "types": "./dist/index.d.ts",
-                "default": "./dist/index.mjs"
-            },
-            "require": {
-                "types": "./dist/index.d.cts",
-                "default": "./dist/index.cjs"
-            },
-            "default": "./dist/index.mjs"
-        },
-        "./dist/*": {
-            "types": "./dist/*.d.ts",
-            "import": "./dist/*.mjs",
-            "require": "./dist/*.cjs"
-        }
+  "name": "garmin-connect",
+  "version": "1.6.2",
+  "description": "Makes it simple to interface with Garmin Connect to get or set any data point",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      },
+      "default": "./dist/index.mjs"
     },
-    "scripts": {
-        "build": "tsup",
-        "format:check": "biome format src",
-        "format:fix": "biome format --write src",
-        "prepare": "npm run build"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Pythe1337N/garmin-connect.git"
-    },
-    "keywords": [
-        "garmin",
-        "connect",
-        "scraper",
-        "weight",
-        "running",
-        "workout",
-        "activity",
-        "activities",
-        "download",
-        "downloader"
-    ],
-    "author": "Oskar Bernberg (Pythe1337N)",
-    "license": "MIT",
-    "files": [
-        "dist/*"
-    ],
-    "devDependencies": {
-        "@biomejs/biome": "1.9.4",
-        "@types/app-root-path": "1.2.4",
-        "@types/lodash": "4.14.199",
-        "@types/luxon": "3.3.2",
-        "@types/node": "18.11.15",
-        "@types/qs": "6.9.7",
-        "@types/request-promise": "4.1.48",
-        "tsup": "8.4.0",
-        "typescript": "5.7.2"
-    },
-    "homepage": "https://github.com/Pythe1337N/garmin-connect#readme",
-    "bugs": {
-        "url": "https://github.com/Pythe1337N/garmin-connect/issues"
-    },
-    "dependencies": {
-        "app-root-path": "3.1.0",
-        "axios": "1.5.1",
-        "crypto": "1.0.1",
-        "form-data": "4.0.0",
-        "lodash": "4.17.21",
-        "luxon": "3.4.3",
-        "oauth-1.0a": "2.2.6",
-        "qs": "6.11.2"
+    "./dist/*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.mjs",
+      "require": "./dist/*.cjs"
     }
+  },
+  "scripts": {
+    "build": "tsup",
+    "format:check": "biome format src",
+    "format:fix": "biome format --write src",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pythe1337N/garmin-connect.git"
+  },
+  "keywords": [
+    "garmin",
+    "connect",
+    "scraper",
+    "weight",
+    "running",
+    "workout",
+    "activity",
+    "activities",
+    "download",
+    "downloader"
+  ],
+  "author": "Oskar Bernberg (Pythe1337N)",
+  "license": "MIT",
+  "files": ["dist/*"],
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/app-root-path": "1.2.4",
+    "@types/lodash": "4.14.199",
+    "@types/luxon": "3.3.2",
+    "@types/node": "18.11.15",
+    "@types/qs": "6.9.7",
+    "@types/request-promise": "4.1.48",
+    "tsup": "8.4.0",
+    "typescript": "5.7.2"
+  },
+  "homepage": "https://github.com/Pythe1337N/garmin-connect#readme",
+  "bugs": {
+    "url": "https://github.com/Pythe1337N/garmin-connect/issues"
+  },
+  "dependencies": {
+    "app-root-path": "3.1.0",
+    "axios": "1.5.1",
+    "crypto": "1.0.1",
+    "form-data": "4.0.0",
+    "lodash": "4.17.21",
+    "luxon": "3.4.3",
+    "oauth-1.0a": "2.2.6",
+    "qs": "6.11.2"
+  }
 }

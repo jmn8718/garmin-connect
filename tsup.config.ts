@@ -1,4 +1,4 @@
-import { defineConfig } from 'tsup'
+import { defineConfig } from 'tsup';
 
 export default defineConfig({
   entry: ['src/index.ts'],
@@ -10,11 +10,11 @@ export default defineConfig({
   sourcemap: false,
   bundle: true,
   splitting: false,
-  outExtension (ctx) {
+  outExtension(ctx) {
     return {
       dts: '.d.ts',
       js: ctx.format === 'cjs' ? '.cjs' : '.mjs',
-    }
+    };
   },
   treeshake: false,
   target: 'es2022',
@@ -23,4 +23,4 @@ export default defineConfig({
   cjsInterop: true,
   keepNames: true,
   skipNodeModulesBundle: false,
-})
+});
