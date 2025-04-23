@@ -338,6 +338,7 @@ export interface ICountActivities {
   countOfActivities: number;
   date: string;
   stats: {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     all: Record<string, any>;
   };
 }

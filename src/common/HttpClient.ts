@@ -6,12 +6,12 @@ import OAuth from 'oauth-1.0a';
 import qs from 'qs';
 import { UrlClass } from '../garmin/UrlClass';
 import { IOauth1, IOauth1Consumer, IOauth1Token, IOauth2Token } from '../garmin/types';
-import {createHmac} from 'crypto'
+import { createHmac } from 'crypto';
 
-const CSRF_RE = new RegExp('name="_csrf"\\s+value="(.+?)"');
-const TICKET_RE = new RegExp('ticket=([^"]+)"');
-const ACCOUNT_LOCKED_RE = new RegExp('var statuss*=s*"([^"]*)"');
-const PAGE_TITLE_RE = new RegExp('<title>([^<]*)</title>');
+const CSRF_RE = /name="_csrf"\s+value="(.+?)"/;
+const TICKET_RE = /ticket=([^"]+)"/;
+const ACCOUNT_LOCKED_RE = /var statuss*=s*"([^"]*)"/;
+const PAGE_TITLE_RE = /<title>([^<]*)<\/title>/;
 
 const USER_AGENT_CONNECTMOBILE = 'com.garmin.android.apps.connectmobile';
 const USER_AGENT_BROWSER =
@@ -63,8 +63,11 @@ export class HttpClient {
           await this.refreshOauth2Token();
           console.log('interceptors: refreshOauth2Token end');
           isRefreshing = false;
+          // biome-ignore lint/complexity/noForEach: <explanation>
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
           refreshSubscribers.forEach((subscriber) => subscriber(this.oauth2Token!.access_token));
           refreshSubscribers = [];
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
           originalRequest.headers.Authorization = `Bearer ${this.oauth2Token!.access_token}`;
           return this.client(originalRequest);
         }
@@ -76,7 +79,7 @@ export class HttpClient {
     );
     this.client.interceptors.request.use(async (config) => {
       if (this.oauth2Token) {
-        config.headers.Authorization = 'Bearer ' + this.oauth2Token.access_token;
+        config.headers.Authorization = `Bearer ${this.oauth2Token.access_token}`;
       }
       return config;
     });
@@ -99,21 +102,25 @@ export class HttpClient {
     }
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   async get<T>(url: string, config?: AxiosRequestConfig<any>): Promise<T> {
     const response = await this.client.get<T>(url, config);
     return response?.data;
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   async post<T>(url: string, data: any, config?: AxiosRequestConfig<any>): Promise<T> {
     const response = await this.client.post<T>(url, data, config);
     return response?.data;
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   async put<T>(url: string, data: any, config?: AxiosRequestConfig<any>): Promise<T> {
     const response = await this.client.put<T>(url, data, config);
     return response?.data;
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   async delete<T>(url: string, config?: AxiosRequestConfig<any>): Promise<T> {
     const response = await this.client.post<T>(url, null, {
       ...config,
@@ -267,6 +274,7 @@ export class HttpClient {
       throw new Error('No Oauth2Token or Oauth1Token');
     }
     const oauth1 = {
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
       oauth: this.getOauthClient(this.OAUTH_CONSUMER!),
       token: this.oauth1Token,
     };
@@ -350,13 +358,13 @@ export class HttpClient {
 
   setOauth2TokenExpiresAt(token: IOauth2Token): IOauth2Token {
     // human readable date
-    token['last_update_date'] = DateTime.now().toLocal().toString();
-    token['expires_date'] = DateTime.fromSeconds(DateTime.now().toSeconds() + token['expires_in'])
+    token.last_update_date = DateTime.now().toLocal().toString();
+    token.expires_date = DateTime.fromSeconds(DateTime.now().toSeconds() + token.expires_in)
       .toLocal()
       .toString();
     // timestamp for check expired
-    token['expires_at'] = DateTime.now().toSeconds() + token['expires_in'];
-    token['refresh_token_expires_at'] = DateTime.now().toSeconds() + token['refresh_token_expires_in'];
+    token.expires_at = DateTime.now().toSeconds() + token.expires_in;
+    token.refresh_token_expires_at = DateTime.now().toSeconds() + token.refresh_token_expires_in;
     return token;
   }
 }

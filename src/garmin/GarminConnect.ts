@@ -3,8 +3,8 @@ import appRoot from 'app-root-path';
 import FormData from 'form-data';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import { HttpClient } from '../common/HttpClient';
 import { checkIsDirectory, createDirectory, writeToFile } from '../utils';
 import { UrlClass } from './UrlClass';
@@ -60,6 +60,7 @@ export interface GCCredentials {
   password: string;
 }
 export interface Listeners {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   [event: string]: EventCallback<any>[];
 }
 
@@ -67,6 +68,7 @@ export enum Event {
   sessionChange = 'sessionChange',
 }
 
+// biome-ignore lint/suspicious/noEmptyInterface: <explanation>
 export interface Session {}
 
 export default class GarminConnect {
@@ -109,15 +111,13 @@ export default class GarminConnect {
   }
   loadTokenByFile(dirPath: string): void {
     if (!checkIsDirectory(dirPath)) {
-      throw new Error('loadTokenByFile: Directory not found: ' + dirPath);
+      throw new Error(`loadTokenByFile: Directory not found: ${dirPath}`);
     }
-    let oauth1Data = fs.readFileSync(path.join(dirPath, 'oauth1_token.json')) as unknown as string;
-    const oauth1 = JSON.parse(oauth1Data);
-    this.client.oauth1Token = oauth1;
+    const oauth1Data = fs.readFileSync(path.join(dirPath, 'oauth1_token.json')) as unknown as string;
+    this.client.oauth1Token = JSON.parse(oauth1Data);
 
-    let oauth2Data = fs.readFileSync(path.join(dirPath, 'oauth2_token.json')) as unknown as string;
-    const oauth2 = JSON.parse(oauth2Data);
-    this.client.oauth2Token = oauth2;
+    const oauth2Data = fs.readFileSync(path.join(dirPath, 'oauth2_token.json')) as unknown as string;
+    this.client.oauth2Token = JSON.parse(oauth2Data);
   }
   exportToken(): IGarminTokens {
     if (!this.client.oauth1Token || !this.client.oauth2Token) {
@@ -208,7 +208,7 @@ export default class GarminConnect {
         responseType: 'arraybuffer',
       });
     } else {
-      throw new Error('downloadOriginalActivityData - Invalid type: ' + type);
+      throw new Error(`downloadOriginalActivityData - Invalid type: ${type}`);
     }
     writeToFile(path.join(dir, `${activity.activityId}.${type}`), fileBuffer);
   }
@@ -216,7 +216,7 @@ export default class GarminConnect {
   async uploadActivity(file: string, format: UploadFileTypeTypeValue = 'fit') {
     const detectedFormat = (format || path.extname(file))?.toLowerCase();
     if (!_.includes(UploadFileType, detectedFormat)) {
-      throw new Error('uploadActivity - Invalid format: ' + format);
+      throw new Error(`uploadActivity - Invalid format: ${format}`);
     }
 
     const fileBuffer = fs.createReadStream(file);
@@ -321,6 +321,7 @@ export default class GarminConnect {
       }
 
       return sleepData;
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       throw new Error(`Error in getSleepData: ${error.message}`);
     }
@@ -348,6 +349,7 @@ export default class GarminConnect {
         hours,
         minutes,
       };
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       throw new Error(`Error in getSleepDuration: ${error.message}`);
     }
@@ -363,6 +365,7 @@ export default class GarminConnect {
       }
 
       return weightData;
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       throw new Error(`Error in getDailyWeightData: ${error.message}`);
     }
@@ -373,9 +376,8 @@ export default class GarminConnect {
 
     if (weightData.totalAverage && typeof weightData.totalAverage.weight === 'number') {
       return gramsToPounds(weightData.totalAverage.weight);
-    } else {
-      throw new Error("Can't find valid daily weight for this date.");
     }
+    throw new Error("Can't find valid daily weight for this date.");
   }
 
   async getDailyHydration(date = new Date()): Promise<number> {
@@ -388,12 +390,13 @@ export default class GarminConnect {
       }
 
       return convertMLToOunces(hydrationData.valueInML);
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       throw new Error(`Error in getDailyHydration: ${error.message}`);
     }
   }
 
-  public async updateWeight(date = new Date(), lbs: number, timezone: string): Promise<UpdateWeight> {
+  public async updateWeight(date: Date, lbs: number, timezone: string): Promise<UpdateWeight> {
     try {
       const weightData = await this.client.post<UpdateWeight>(`${this.url.UPDATE_WEIGHT}`, {
         dateTimestamp: getLocalTimestamp(date, timezone),
@@ -403,12 +406,13 @@ export default class GarminConnect {
       });
 
       return weightData;
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       throw new Error(`Error in updateWeight: ${error.message}`);
     }
   }
 
-  async updateHydrationLogOunces(date = new Date(), valueInOz: number): Promise<WaterIntake> {
+  async updateHydrationLogOunces(date: Date, valueInOz: number): Promise<WaterIntake> {
     try {
       const dateString = toDateString(date);
       const hydrationData = await this.client.put<WaterIntake>(`${this.url.HYDRATION_LOG}`, {
@@ -419,6 +423,7 @@ export default class GarminConnect {
       });
 
       return hydrationData;
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       throw new Error(`Error in updateHydrationLogOunces: ${error.message}`);
     }
@@ -433,6 +438,7 @@ export default class GarminConnect {
       }
 
       return golfSummary;
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       throw new Error(`Error in getGolfSummary: ${error.message}`);
     }
@@ -449,6 +455,7 @@ export default class GarminConnect {
       }
 
       return golfScorecard;
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       throw new Error(`Error in getGolfScorecard: ${error.message}`);
     }
@@ -462,21 +469,25 @@ export default class GarminConnect {
       });
 
       return heartRate;
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       throw new Error(`Error in getHeartRate: ${error.message}`);
     }
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   async get<T>(url: string, data?: any) {
     const response = await this.client.get(url, data);
     return response as T;
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   async post<T>(url: string, data: any) {
     const response = await this.client.post<T>(url, data, {});
     return response as T;
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   async put<T>(url: string, data: any) {
     const response = await this.client.put<T>(url, data, {});
     return response as T;

@@ -1,18 +1,14 @@
-import * as fs from 'fs';
+import { existsSync, lstatSync, mkdirSync, writeFileSync } from 'node:fs';
 
 export const checkIsDirectory = (filePath: string): boolean => {
-  return fs.existsSync(filePath) && fs.lstatSync(filePath).isDirectory();
+  return existsSync(filePath) && lstatSync(filePath).isDirectory();
 };
 
 export const createDirectory = (directoryPath: string): void => {
-  fs.mkdirSync(directoryPath);
+  mkdirSync(directoryPath);
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const writeToFile = (filePath: string, data: any): void => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  fs.writeFileSync(filePath, data, (error) => {
-    if (error) throw error;
-  });
+  writeFileSync(filePath, data);
 };
