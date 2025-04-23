@@ -204,8 +204,8 @@ export interface Gear {
   userProfilePk: GCUserProfileId;
   gearMakeName: string;
   gearModelName: string;
-  gearTypeName: string;
-  gearStatusName: string;
+  gearTypeName: 'Shoes' | 'Bike' | 'Other' | string;
+  gearStatusName: 'retired' | 'active';
   displayName: string | null;
   customMakeModel: string;
   imageNameLarge: string | null;
