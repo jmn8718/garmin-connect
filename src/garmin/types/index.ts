@@ -198,6 +198,11 @@ export interface IBadge {
   connections: IBadgeSocialConnection[] | null;
 }
 
+export enum GearStatus {
+  ACTIVE = 'active',
+  RETIRED = 'retired',
+}
+
 export interface Gear {
   gearPk: GCGearId;
   uuid: GCGearUuid;
@@ -205,7 +210,7 @@ export interface Gear {
   gearMakeName: string;
   gearModelName: string;
   gearTypeName: 'Shoes' | 'Bike' | 'Other' | string;
-  gearStatusName: 'retired' | 'active';
+  gearStatusName: GearStatus;
   displayName: string | null;
   customMakeModel: string;
   imageNameLarge: string | null;

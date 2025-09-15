@@ -48,6 +48,9 @@ export class UrlClass {
   get ACTIVITY_GEAR() {
     return `${this.GC_API}/gear-service/gear/filterGear`;
   }
+  GEAR_DATA(gearId: GCGearUuid) {
+    return `${this.GC_API}/gear-service/gear/${gearId}`;
+  }
   ACTIVITY_GEAR_LINK(gearId: GCGearUuid, activityId: GCActivityId) {
     return `${this.GC_API}/gear-service/gear/link/${gearId}/activity/${activityId}`;
   }

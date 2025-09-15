@@ -14,6 +14,7 @@ import {
   GCUserHash,
   GarminDomain,
   Gear,
+  GearStatus,
   ICountActivities,
   IDailyStepsType,
   IGarminTokens,
@@ -193,6 +194,40 @@ export default class GarminConnect {
 
   unlinkActivityGear(gearUuid: GCGearUuid, activityId: GCActivityId): Promise<Gear> {
     return this.client.put<Gear>(this.url.ACTIVITY_GEAR_UNLINK(gearUuid, activityId), {});
+  }
+
+  async changeGearStatus(
+    userProfileId: string | number,
+    gearUuid: GCGearUuid,
+    data:
+      | {
+          status: GearStatus.RETIRED;
+          dateEnd: Date;
+        }
+      | {
+          status: GearStatus.ACTIVE;
+        },
+  ): Promise<Gear> {
+    // Validate gear exists and fetch data for update to use all the current fields
+    // as garmin requires all fields to be sent as it is an update of the gear
+    // and not a status change itself
+    const gears = await this.getGears(userProfileId);
+    const gear = gears.find((g) => g.uuid === gearUuid);
+    if (!gear) {
+      throw new Error(`changeGearStatus: Gear with uuid ${gearUuid} not found`);
+    }
+    if (gear.gearStatusName === data.status) {
+      throw new Error(`changeGearStatus: Gear already has status ${data.status}`);
+    }
+    return this.client.put<Gear>(this.url.GEAR_DATA(gearUuid), {
+      ...gear,
+      gearStatusName: data.status,
+      ...(data.status === GearStatus.RETIRED
+        ? { dateEnd: data.dateEnd.toISOString() }
+        : {
+            dateEnd: null,
+          }),
+    });
   }
 
   async downloadOriginalActivityData(
